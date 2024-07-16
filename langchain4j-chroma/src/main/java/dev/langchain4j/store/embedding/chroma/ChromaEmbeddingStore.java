@@ -43,7 +43,8 @@ public class ChromaEmbeddingStore implements EmbeddingStore<TextSegment> {
         String collectionName,
         Duration timeout,
         boolean logRequests,
-        boolean logResponses
+        boolean logResponses,
+        String token
     ) {
         this.collectionName = getOrDefault(collectionName, "default");
 
@@ -53,6 +54,7 @@ public class ChromaEmbeddingStore implements EmbeddingStore<TextSegment> {
                 .timeout(getOrDefault(timeout, ofSeconds(5)))
                 .logRequests(logRequests)
                 .logResponses(logResponses)
+                .token(token)
                 .build();
 
         Collection collection = chromaClient.collection(this.collectionName);
@@ -74,6 +76,7 @@ public class ChromaEmbeddingStore implements EmbeddingStore<TextSegment> {
         private Duration timeout;
         private boolean logRequests;
         private boolean logResponses;
+        private String token;
 
         /**
          * @param baseUrl The base URL of the Chroma service.
@@ -107,6 +110,11 @@ public class ChromaEmbeddingStore implements EmbeddingStore<TextSegment> {
             return this;
         }
 
+        public Builder token(String token) {
+            this.token = token;
+            return this;
+        }
+
         public Builder logResponses(boolean logResponses) {
             this.logResponses = logResponses;
             return this;
@@ -118,7 +126,8 @@ public class ChromaEmbeddingStore implements EmbeddingStore<TextSegment> {
                 this.collectionName,
                 this.timeout,
                 this.logRequests,
-                this.logResponses
+                this.logResponses,
+                this.token
             );
         }
     }
