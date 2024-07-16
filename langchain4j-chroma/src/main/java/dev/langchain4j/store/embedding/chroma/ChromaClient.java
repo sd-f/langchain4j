@@ -30,6 +30,10 @@ class ChromaClient {
             httpClientBuilder.addInterceptor(new ChromaResponseLoggingInterceptor());
         }
 
+        if (builder.token != null) {
+            httpClientBuilder.addInterceptor(new ChromaRequestTokenInterceptor(builder.token));
+        }
+
         Gson gson = new GsonBuilder().setFieldNamingPolicy(LOWER_CASE_WITH_UNDERSCORES).create();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -47,6 +51,7 @@ class ChromaClient {
         private Duration timeout;
         private boolean logRequests;
         private boolean logResponses;
+        private String token;
 
         public Builder baseUrl(String baseUrl) {
             this.baseUrl = baseUrl;
@@ -65,6 +70,11 @@ class ChromaClient {
 
         public Builder logResponses(boolean logResponses) {
             this.logResponses = logResponses;
+            return this;
+        }
+
+        public Builder token(String token) {
+            this.token = token;
             return this;
         }
 
